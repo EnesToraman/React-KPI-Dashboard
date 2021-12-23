@@ -1,24 +1,23 @@
 import React, { useRef, useState } from "react"
-import { Alert } from "react-bootstrap"
+import { Alert, Container } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
-import { Link } from "react-router-dom"
-import { Container } from "react-bootstrap"
+import { Link, useNavigate } from "react-router-dom"
 
 export const Login = () => {
     const emailRef = useRef()
     const passwordRef = useRef()
-    // const { logIn } = useAuth()
+    const { logIn } = useAuth()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-    // const navigate = useNavigate()
+    const navigate = useNavigate()
 
     async function handleSubmit(e) {
         e.preventDefault()
         try {
             setError("")
             setLoading(true)
-            // await logIn(emailRef.current.value, passwordRef.current.value)
-            // navigate("/dashboard")
+            await logIn(emailRef.current.value, passwordRef.current.value)
+            navigate("/dashboard")
         } catch {
             setError("Failed to log in")
         }
@@ -45,7 +44,7 @@ export const Login = () => {
                                 <div className="d-grid gap-2">
                                     <button type="submit" className="btn submit-buttons">Log in</button>
                                 </div>
-                                <div className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
+                                <div disabled={loading} className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
                                     Don't have an account? <Link to="/signup">Sign up</Link>
                                 </div>
                             </form>
