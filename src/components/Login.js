@@ -1,27 +1,29 @@
 import React, { useRef, useState } from "react"
 import { Alert, Container } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
 import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
 export const Login = () => {
+    const { login, setAuthenticated, setEmail } = useAuth()
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
     const emailRef = useRef()
     const passwordRef = useRef()
-    const { logIn } = useAuth()
-    const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
 
-    async function handleSubmit(e) {
+    async function handleSubmit(e){
         e.preventDefault()
         try {
             setError("")
             setLoading(true)
-            await logIn(emailRef.current.value, passwordRef.current.value)
-            navigate("/dashboard")
-        } catch {
+            await login(emailRef.current.value, passwordRef.current.value)
+            setAuthenticated(true)
+        } catch (error) {
             setError("Failed to log in")
+        } finally {
+            setLoading(false)
+            navigate("/dashboard")
         }
-        setLoading(false)
     }
 
     return (
@@ -33,19 +35,19 @@ export const Login = () => {
                             <form className="form-container" onSubmit={handleSubmit}>
                                 <h3>Log in to KPI Portal</h3>
                                 {error && <Alert variant="danger">{error}</Alert>}
-                                <div className="form-group">
+                                <div className="form-group" id="email">
                                     <label>Email</label>
-                                    <input type="email" className="form-control" />
+                                    <input type="email" className="form-control" ref={emailRef} />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group" id="password">
                                     <label>Password</label>
-                                    <input type="password" className="form-control" />
+                                    <input type="password" className="form-control" ref={passwordRef} />
                                 </div>
                                 <div className="d-grid gap-2">
                                     <button type="submit" className="btn submit-buttons">Log in</button>
                                 </div>
                                 <div disabled={loading} className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
-                                    Don't have an account? <Link to="/signup">Sign up</Link>
+                                    Don't have an account? <Link to="/sign-up">Sign up</Link>
                                 </div>
                             </form>
                         </div>
@@ -54,4 +56,4 @@ export const Login = () => {
             </Container>
         </div>
     )
-} 
+}
