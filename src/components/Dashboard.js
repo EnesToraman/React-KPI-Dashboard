@@ -1,12 +1,13 @@
-import { useAuth } from "../contexts/AuthContext"
 import { useContext } from "react"
+import { UserContext } from "../App"
 
 export const Dashboard = () => {
-      const { email } = useAuth()
+      const { user } = useContext(UserContext)
+      const { email } = user
 
       return (
             <div>
-                  {email}
+                  The user email: {decodeURIComponent(email)}
             </div>
       )
 }

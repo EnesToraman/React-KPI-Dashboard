@@ -1,28 +1,29 @@
-import React, { useRef, useState } from "react"
+import React, { useContext, useState } from "react"
 import { Alert, Container } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
-import { useAuth } from "../contexts/AuthContext"
+import { UserContext } from "../App"
+import { api } from "../apis/api"
 
 export const Login = () => {
-    const { login, setAuthenticated, setEmail } = useAuth()
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState("")
-    const emailRef = useRef()
-    const passwordRef = useRef()
+    const { setUser } = useContext(UserContext)
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
 
-    async function handleSubmit(e){
+    async function handleSubmit(e) {
         e.preventDefault()
         try {
-            setError("")
+            setError('')
             setLoading(true)
-            await login(emailRef.current.value, passwordRef.current.value)
-            setAuthenticated(true)
+            await api.login({ email, password })
+            setLoading(false)
+            setUser({ email })
+            setEmail(email)
+            navigate('/dashboard')
         } catch (error) {
             setError("Failed to log in")
-        } finally {
-            setLoading(false)
-            navigate("/dashboard")
         }
     }
 
@@ -37,11 +38,11 @@ export const Login = () => {
                                 {error && <Alert variant="danger">{error}</Alert>}
                                 <div className="form-group" id="email">
                                     <label>Email</label>
-                                    <input type="email" className="form-control" ref={emailRef} />
+                                    <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
                                 </div>
                                 <div className="form-group" id="password">
                                     <label>Password</label>
-                                    <input type="password" className="form-control" ref={passwordRef} />
+                                    <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
                                 <div className="d-grid gap-2">
                                     <button type="submit" className="btn submit-buttons">Log in</button>
