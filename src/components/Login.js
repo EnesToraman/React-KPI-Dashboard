@@ -12,18 +12,18 @@ export const Login = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
 
-    async function handleSubmit(e) {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             setError('')
             setLoading(true)
             await api.login({ email, password })
-            setLoading(false)
             setUser({ email })
             setEmail(email)
             navigate('/dashboard')
         } catch (error) {
             setError("Failed to log in")
+            setLoading(false)
         }
     }
 
@@ -32,7 +32,7 @@ export const Login = () => {
             <Container className="d-flex align-items-center justify-content-center">
                 <div className="container-fluid">
                     <div className="row justify-content-center">
-                        <div className="col-md-6 col-sm-12 col-xs-12">
+                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                             <form className="form-container" onSubmit={handleSubmit}>
                                 <h3>Log in to KPI Portal</h3>
                                 {error && <Alert variant="danger">{error}</Alert>}
@@ -45,9 +45,9 @@ export const Login = () => {
                                     <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
                                 <div className="d-grid gap-2">
-                                    <button type="submit" className="btn submit-buttons">Log in</button>
+                                    <button disabled={loading}  type="submit" className="btn submit-buttons">Log in</button>
                                 </div>
-                                <div disabled={loading} className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
+                                <div className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
                                     Don't have an account? <Link to="/sign-up">Sign up</Link>
                                 </div>
                             </form>
