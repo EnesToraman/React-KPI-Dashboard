@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react"
 import { UserContext } from "../App"
-import Chart from 'chart.js/auto'
+import { Chart } from 'chart.js'
 import { Bar } from 'react-chartjs-2';
 import { Container, Dropdown } from "react-bootstrap";
 import { api } from "../apis/api";
