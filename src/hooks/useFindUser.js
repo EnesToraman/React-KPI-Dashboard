@@ -9,8 +9,8 @@ export const useFindUser = () => {
         const findUser = async () => {
             try {
                 const { data } = await api.getUser()
-                const { email } = data
-                setUser({ email })
+                const { email, role } = data
+                setUser({ email, role })
             } catch (error) { }
             setLoading(false);
         }

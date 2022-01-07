@@ -19,5 +19,8 @@ export const api = {
       },
       async getUser() {
             return await httpClient.get('/authUser')
+      },
+      async getPassengerData() {
+            return await httpClient.get('/passengerData')
       }
 }

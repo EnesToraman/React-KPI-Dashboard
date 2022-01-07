@@ -1,12 +1,23 @@
-import { useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { UserContext } from "../App"
 import Chart from 'chart.js/auto'
 import { Bar } from 'react-chartjs-2';
-import { Container } from "react-bootstrap";
+import { Container, Dropdown } from "react-bootstrap";
+import { api } from "../apis/api";
 
 export const Dashboard = () => {
-      const { user } = useContext(UserContext)
-      const { email } = user
+      const [passengerData, setPassengerData] = useState([]);
+      const { user } = useContext(UserContext);
+      const { role } = user;
+      const [dateFilter, setDateFilter] = useState("");
+
+      useEffect(() => {
+            const fetchAPI = async () => {
+                  const { data } = await api.getPassengerData()
+                  setPassengerData(data)
+            }
+            fetchAPI()
+      }, [])
 
       const options = {
             responsive: true,
@@ -21,15 +32,14 @@ export const Dashboard = () => {
             },
       };
 
-      const labels = ['01.01.2022', '02.01.2022', '03.01.2022', '04.01.2022', '05.01.2022', '06.01.2022', '07.01.2022',
-            '08.01.2022', '09.01.2022', '10.01.2022', '11.01.2022', '12.01.2022', '13.01.2022', '14.01.2022'];
+      const labels = passengerData.map((p) => p.date);
 
       const data = {
             labels,
             datasets: [
                   {
                         label: 'Passengers',
-                        data: [10, 20, 30, 40, 5, 6, 7],
+                        data: passengerData.map((p) => p.numberOfPassengers),
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                   },
             ],
@@ -37,12 +47,56 @@ export const Dashboard = () => {
 
       return (
             <Container>
-                  <div className="row">
-                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                  <div className="row ">
+                        <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                               <Bar options={options} data={data} />
+                        </div>
+                        <div className="col-lg-3 col-md-12 col-sm-12 col-xs-12 align-self-center" style={{ "textAlign": "left" }}>
+                              <div className="row mb-4 ps-5">
+                                    <div className="col">
+                                          <Dropdown>
+                                                <Dropdown.Toggle style={{"backgroundColor": "pink", "border": "none"}} id="dropdown-basic">
+                                                      {dateFilter ? dateFilter : "Class"}
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                      <Dropdown.Item onClick={() => setDateFilter("")}>
+                                                            All
+                                                      </Dropdown.Item>
+                                                      {passengerData.map((p) =>
+                                                            <Dropdown.Item onClick={() => setDateFilter(p.date)}>
+                                                                  {p.date}
+                                                            </Dropdown.Item>)}
+                                                </Dropdown.Menu>
+                                          </Dropdown>
+                                    </div>
+                              </div>
+                              <div className="row ps-5">
+                                    <div className="col">
+                                          <Dropdown>
+                                                <Dropdown.Toggle style={{"backgroundColor": "pink", "border": "none"}} id="dropdown-basic">
+                                                      {dateFilter ? dateFilter : "From: Country"}
+                                                </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                      <Dropdown.Item onClick={() => setDateFilter("")}>
+                                                            All
+                                                      </Dropdown.Item>
+                                                      {passengerData.map((p) =>
+                                                            <Dropdown.Item onClick={() => setDateFilter(p.date)}>
+                                                                  {p.date}
+                                                            </Dropdown.Item>)}
+                                                </Dropdown.Menu>
+                                          </Dropdown>
+                                    </div>
+                              </div>
                         </div>
                         <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                               <Bar options={options} data={data} />
+                        </div>
+                  </div>
+
+                  <div className="row">
+                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                              {role == 'STAFF' ? 'staff' : 'admin'}
                         </div>
                   </div>
             </Container>
