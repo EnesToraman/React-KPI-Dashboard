@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import { Alert, Container } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { UserContext } from "../App"
-import { api } from "../apis/api"
+import { api } from "../api/api"
 
 export const Login = () => {
     const { setUser } = useContext(UserContext)
@@ -15,13 +15,15 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
+            console.log('TRY');
             setError('')
             setLoading(true)
             await api.login({ email, password })
-            setUser({ email })
-            setEmail(email)
+            const { data: { role } } = await api.getUser()
+            setUser({ email, role })
             navigate('/dashboard')
         } catch (error) {
+            console.error(error)
             setError("Failed to log in")
             setLoading(false)
         }
@@ -34,7 +36,7 @@ export const Login = () => {
                     <div className="row justify-content-center">
                         <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                             <form className="form-container" onSubmit={handleSubmit}>
-                                <h3>Log in to KPI Portal</h3>
+                                <h3>Log in to KPI Dashboard</h3>
                                 {error && <Alert variant="danger">{error}</Alert>}
                                 <div className="form-group" id="email">
                                     <label>Email</label>
@@ -45,7 +47,7 @@ export const Login = () => {
                                     <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} />
                                 </div>
                                 <div className="d-grid gap-2">
-                                    <button disabled={loading}  type="submit" className="btn submit-buttons">Log in</button>
+                                    <button disabled={loading} type="submit" className="btn submit-buttons">Log in</button>
                                 </div>
                                 <div className="w-100 text-center mt-2" style={{ color: "rgb(95, 92, 136)", fontWeight: "600" }}>
                                     Don't have an account? <Link to="/sign-up">Sign up</Link>

@@ -17,10 +17,16 @@ export const api = {
       async login(params) {
           return await httpClient.post('/login', params)
       },
+      async logout() {
+            return await httpClient.post('/logout')
+      },
       async getUser() {
             return await httpClient.get('/authUser')
       },
-      async getPassengerData() {
-            return await httpClient.get('/passengerData')
+      async getTicketData() {
+            return await httpClient.get('/ticketData')
+      },
+      async getTicketDataByDate(date) {
+            return await httpClient.get(`/ticketData/${date}`)
       }
 }

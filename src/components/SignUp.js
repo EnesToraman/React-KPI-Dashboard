@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Container } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
-import { api } from '../apis/api';
+import { api } from '../api/api';
 
 export const SignUp = () => {
     const [email, setEmail] = useState("");
@@ -37,7 +37,7 @@ export const SignUp = () => {
                     <div className="row justify-content-center">
                         <div className="col-md-6 col-sm-12 col-xs-12">
                             <form className="form-container" onSubmit={handleSubmit}>
-                                <h3>Sign up to KPI Portal</h3>
+                                <h3>Sign up to KPI Dashboard</h3>
                                 {error && <Alert variant="danger">{error}</Alert>}
                                 {successMsg && <Alert variant="success">{successMsg}</Alert>}
                                 <div className="form-group" id="email">
