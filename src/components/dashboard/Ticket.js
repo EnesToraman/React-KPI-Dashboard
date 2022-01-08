@@ -21,7 +21,7 @@ const compose = (...fns) => arg => fns.reduceRight((acc, fn) => fn(acc), arg)
 const identity = x => x
 
 
-export const TicketDateData = () => {
+export const Ticket = () => {
       const [ticketData, setTicketData] = useState([]);
       const [countryFilter, setCountryFilter] = useState("");
       const [classFilter, setClassFilter] = useState("");

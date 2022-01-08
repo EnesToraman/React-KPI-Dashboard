@@ -1,6 +1,6 @@
 
 
-export const ManagerOnlyData = () => {
+export const ManagerOnlyGraph = () => {
     const { user } = useContext(UserContext);
     const { role } = user;
 
