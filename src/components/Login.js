@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react"
 import { Alert, Container } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
 import { UserContext } from "../App"
-import { api } from "../api/api"
+import { api } from "../api"
 
 export const Login = () => {
     const { setUser } = useContext(UserContext)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Container } from "react-bootstrap"
-import { Link, useNavigate } from "react-router-dom"
-import { api } from '../api/api';
+import { Link } from "react-router-dom"
+import { api } from '../api';
 
 export const SignUp = () => {
     const [email, setEmail] = useState("");
@@ -10,7 +10,6 @@ export const SignUp = () => {
     const [error, setError] = useState("");
     const [successMsg, setSuccessMsg] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault()

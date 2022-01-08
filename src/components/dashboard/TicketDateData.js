@@ -1,10 +1,8 @@
-import { useState, useContext, useEffect } from "react"
-import { UserContext } from "../App"
+import { useState, useEffect } from "react"
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { Bar } from 'react-chartjs-2';
-import { Container, Dropdown } from "react-bootstrap";
-import { api } from "../api/api";
-import { Logout } from "./Logout"
+import { Dropdown } from "react-bootstrap";
+import { api } from "../../api";
 
 Chart.register(
       CategoryScale,
@@ -15,29 +13,23 @@ Chart.register(
       Legend
 )
 
-
 const map = predicate => arr => arr.map(el => predicate(el) ? el : ({ ...el, numberOfPassengers: 0 }))
 const depPlacePredicate = depPlace => element => element.depPlace === depPlace
 const classPredicate = className => element => element.class === className
 const unique = (array) => Array.from(new Set([...array]))
 const compose = (...fns) => arg => fns.reduceRight((acc, fn) => fn(acc), arg)
-
 const identity = x => x
 
 
-export const Dashboard = () => {
-      const [passengerData, setPassengerData] = useState([]);
-      const { user } = useContext(UserContext);
-      const { role } = user;
-      const [dateFilter, setDateFilter] = useState("");
+export const TicketDateData = () => {
+      const [ticketData, setTicketData] = useState([]);
       const [countryFilter, setCountryFilter] = useState("");
-
       const [classFilter, setClassFilter] = useState("");
- 
+
       useEffect(() => {
             const fetchAPI = async () => {
                   const { data } = await api.getTicketData()
-                  setPassengerData(data)
+                  setTicketData(data)
             }
             fetchAPI()
       }, [])
@@ -50,23 +42,21 @@ export const Dashboard = () => {
                   },
                   title: {
                         display: true,
-                        text: 'Passengers per Day',
+                        text: 'Tickets per Day',
                   },
             },
       };
 
-
-      const labels = unique(passengerData.map((p) => p.date))
-      const countries = unique(passengerData.map(p => p.depPlace))
-      const classess = unique(passengerData.map(p => p.class))
-
+      const labels = unique(ticketData.map((p) => p.date))
+      const countries = unique(ticketData.map(p => p.depPlace))
+      const classess = unique(ticketData.map(p => p.class))
 
       const filters = compose(
             classFilter ? classPredicate(classFilter) : identity,
-            countryFilter ? depPlacePredicate(countryFilter): identity
+            countryFilter ? depPlacePredicate(countryFilter) : identity
       )
-      const filteredPassengerData = map(filters)(passengerData)
- 
+      const filteredPassengerData = map(filters)(ticketData)
+
       const passengerByDate = filteredPassengerData.reduce((passengerByDate, passenger) => {
             if (passengerByDate[passenger.date]) {
                   passengerByDate[passenger.date] += passenger.numberOfPassengers
@@ -81,7 +71,7 @@ export const Dashboard = () => {
             labels,
             datasets: [
                   {
-                        label: 'Passengers',
+                        label: 'Tickets',
                         data: numPassengers,
                         backgroundColor: 'rgba(255, 99, 132, 0.5)',
                   },
@@ -89,9 +79,7 @@ export const Dashboard = () => {
       };
 
       return (
-            <Container>
-                  <Logout />
-                  <div className="row ">
+                  <div className="row mt-4 pb-4" style={{ "backgroundColor": "white", "borderRadius": "10px"}}>
                         <div className="col-lg-9 col-md-12 col-sm-12 col-xs-12">
                               <Bar options={options} data={data} />
                         </div>
@@ -133,16 +121,6 @@ export const Dashboard = () => {
                                     </div>
                               </div>
                         </div>
-                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                              <Bar options={options} data={data} />
-                        </div>
                   </div>
-
-                  <div className="row">
-                        <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                              {role == 'STAFF' ? 'staff' : 'admin'}
-                        </div>
-                  </div>
-            </Container>
       )
 }

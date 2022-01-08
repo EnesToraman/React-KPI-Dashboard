@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom"
-import { api } from "../api/api"
+import { api } from "../api"
 
 export const Logout = () => {
     const navigate = useNavigate()
@@ -16,9 +16,10 @@ export const Logout = () => {
     }
 
     return (
-        <div>
-        <button onClick={handleClick} type="submit" className="btn submit-buttons">Log out</button>
+        <div className="row pt-4">
+            <div className="col" style={{ "textAlign": "right" }}>
+                <button onClick={handleClick} type="submit" className="btn submit-buttons">Log out</button>
+            </div>
         </div>
     );
 }
- 

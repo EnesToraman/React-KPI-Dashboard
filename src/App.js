@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
-import { Dashboard } from "./components/Dashboard";
+import { Dashboard } from "./components/dashboard/Dashboard";
 import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp";
 import { PrivateRoute } from "./components/PrivateRoute";
