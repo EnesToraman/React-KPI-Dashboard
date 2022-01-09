@@ -24,22 +24,24 @@ export const api = {
 		return await httpClient.get('/authUser')
 	},
 	async getTicketData() {
-		return await httpClient.get('/ticketData')
+		return await httpClient.get('/ticketCountGroupByDate')
 	},
 	async getRevenue() {
-		return await httpClient.get('/getRevenue')
+		return await httpClient.get('/totalPriceGroupByDate')
 	},
 	async getAverageTicketPrice() {
-		return await httpClient.get('/getAverageTicketPrice')
+		return await httpClient.get('/averageTicketPriceGroupByDate')
 	},
 	async getTicketClass() {
-		return await httpClient.get('/getTicketClass')
+		return await httpClient.get('/ticketCountGroupByClass')
 	},
 	async getEmployeeTitle() {
-		return await httpClient.get('/getEmployeeTitle')
+		return await httpClient.get('/employeeCountGroupByTitle')
 	},
 	async getPlanes() {
-		return await httpClient.get('/getPlanes')
+		return await httpClient.get('/planeCountGroupByAirline')
 	},
-
+	async getEmployeeSalary() {
+		return await httpClient.get('employeeAverageSalaryGroupByTitle')
+	}
 }

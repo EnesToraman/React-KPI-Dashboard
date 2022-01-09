@@ -15,7 +15,6 @@ export const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log('TRY');
             setError('')
             setLoading(true)
             await api.login({ email, password })

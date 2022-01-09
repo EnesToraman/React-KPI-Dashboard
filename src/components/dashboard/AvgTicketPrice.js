@@ -37,7 +37,7 @@ export const AvgTicketPrice = () => {
 		datasets: [
 			{
 				label: 'Ticket Price',
-				data: revenueData.map(revenue => revenue.totalPrice),
+				data: revenueData.map(revenue => revenue.avgPrice),
 				backgroundColor: 'rgba(255, 99, 132, 0.5)',
 			},
 		],

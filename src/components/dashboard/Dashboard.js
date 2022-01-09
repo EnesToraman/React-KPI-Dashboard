@@ -6,6 +6,7 @@ import { TicketClass } from "./TicketClass";
 import { EmployeeTitle } from "./EmployeeTitle";
 import { Plane } from "./Plane";
 import { Ticket } from "./Ticket"
+import { ManagerOnlyGraph } from "./ManagerOnlyGraph";
 
 export const Dashboard = () => {
 
@@ -14,7 +15,7 @@ export const Dashboard = () => {
             <Container>
                 <Logout />
                 <div className="row mt-4 justify-content-between">
-                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12" style={{ "backgroundColor": "white", "borderRadius": "15px", "width": "49%" }}>
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12" style={{"backgroundColor": "white", "borderRadius": "15px", "width": "49%" }}>
                         <Revenue />
                     </div>
                     <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12" style={{ "backgroundColor": "white", "borderRadius": "15px", "width": "49%" }}>
@@ -22,7 +23,7 @@ export const Dashboard = () => {
                     </div>
                 </div>
                 <div className="row mt-3 justify-content-between">
-                    <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12" style={{ "backgroundColor": "white", "borderRadius": "10px", "width": "32.3%" }}>
+                    <div className="col-lg-6 col-md-12 col-sm-12 col-xs-12" style={{ "backgroundColor": "white", "borderRadius": "10px", "width": "32.3%" }}>
                         <TicketClass />
                     </div>
                     <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12" style={{ "backgroundColor": "white", "borderRadius": "10px", "width": "32.3%" }}>
@@ -33,6 +34,7 @@ export const Dashboard = () => {
                     </div>
                 </div>
                 <Ticket />
+                <ManagerOnlyGraph />
             </Container>
         </div>
     );

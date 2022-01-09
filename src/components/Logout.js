@@ -7,7 +7,6 @@ export const Logout = () => {
     const handleClick = async (e) => {
         e.preventDefault()
         try {
-            console.log("here")
             await api.logout()
             navigate("/login")
         } catch (error) {

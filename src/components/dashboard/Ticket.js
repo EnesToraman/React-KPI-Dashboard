@@ -2,7 +2,9 @@ import { useState, useEffect } from "react"
 import { Chart, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { Bar } from 'react-chartjs-2';
 import { Dropdown } from "react-bootstrap";
+
 import { api } from "../../api";
+import { compose, identity, unique, prop, map } from "../../utils";
 
 Chart.register(
       CategoryScale,
@@ -13,13 +15,22 @@ Chart.register(
       Legend
 )
 
-const map = predicate => arr => arr.map(el => predicate(el) ? el : ({ ...el, numberOfPassengers: 0 }))
-const depPlacePredicate = depPlace => element => element.depPlace === depPlace
-const classPredicate = className => element => element.class === className
-const unique = (array) => Array.from(new Set([...array]))
-const compose = (...fns) => arg => fns.reduceRight((acc, fn) => fn(acc), arg)
-const identity = x => x
+const convert = element => ({ ...element, numberOfPassengers: 0 })
 
+const depPlaceProp = prop('depPlace')
+const classProp = prop('class')
+const dateProp = prop('date')
+
+const mapConvertPassengers = predicate => map(passenger => predicate(passenger) ? passenger : convert(passenger))
+
+const depPlacePredicate = depPlace => element => depPlaceProp(element) === depPlace
+const classPredicate = className => element => classProp(element) === className
+
+const uniqueFor = prop => compose(unique, map(prop))
+
+const uniqueClassess = uniqueFor(classProp)
+const uniqueCountries = uniqueFor(depPlaceProp)
+const uniqueDates = uniqueFor(dateProp)
 
 export const Ticket = () => {
       const [ticketData, setTicketData] = useState([]);
@@ -46,16 +57,15 @@ export const Ticket = () => {
                   },
             },
       };
-
-      const labels = unique(ticketData.map((p) => p.date))
-      const countries = unique(ticketData.map(p => p.depPlace))
-      const classess = unique(ticketData.map(p => p.class))
-
-      const filters = compose(
-            classFilter ? classPredicate(classFilter) : identity,
-            countryFilter ? depPlacePredicate(countryFilter) : identity
-      )
-      const filteredPassengerData = map(filters)(ticketData)
+   
+      const labels = uniqueDates(ticketData)
+      const countries = uniqueCountries(ticketData) 
+      const classess = uniqueClassess(ticketData)
+        
+      const filteredPassengerData = compose(
+            classFilter ? mapConvertPassengers(classPredicate(classFilter)) : mapConvertPassengers(identity),
+            countryFilter ? mapConvertPassengers(depPlacePredicate(countryFilter)) : mapConvertPassengers(identity)
+      )(ticketData)
 
       const passengerByDate = filteredPassengerData.reduce((passengerByDate, passenger) => {
             if (passengerByDate[passenger.date]) {
