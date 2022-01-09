@@ -1,3 +1,11 @@
+# KPI Dashboard Application
+
+![Login](/src/images/Login.png)
+
+![Dashboard-1](/src/images/Dashboard1.png)
+
+![Dashboard-2](/src/images/Dashboard2.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
